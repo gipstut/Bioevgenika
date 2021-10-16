@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h1>Добавление товара</h1>
+{% endblock %}
+
+{% block body %}
+<div class ='container mt-5'>
+    <h1>Редактирование статьи</h1>
+    <form method ='POST'>
+        <input type ='number' class = 'form-control' name = "id" id = "id"  placeholder="Введите ID товара, который бы вы хотели отредактировать"><br>
+        <button class = 'btn btn-success' type = 'submit'>Обновить товар этого ID</button>
+    </form>
+</div>
+{% endblock %}

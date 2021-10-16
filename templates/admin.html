@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block title %}BioEvgenica{% endblock %}
+
+{% block body %}
+<div class ='container mt-5'>
+    <h1>Выберете раздел</h1>
+    <form method="post">
+        <a href="/del" class = 'btn btn-success' type = 'button'>Удалить товар</a>
+        <a href="/create" class = 'btn btn-success' type = 'button'>Добавить товар</a>
+        <button class = 'btn btn-success' type = 'submit'>Редактировать пост</button>
+    </form>
+</div>
+{% endblock %}
