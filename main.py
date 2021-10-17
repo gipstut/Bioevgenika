@@ -145,5 +145,10 @@ def about():
     return render_template('About_us.html')
 
 
+@app.route('/product')
+def about():
+    return render_template('Product.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
