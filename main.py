@@ -52,7 +52,7 @@ def update():
         id = request.form['id']
         article = Item.query.get(id)
         return render_template('post_update.html', article=article)
-    elif request.method == 'POST' and len(request.form['link']) != 0:
+    elif request.method == 'POST' and 'link' in request.form:
         num = request.form['num']
         article = Item.query.get(num)
         article.link = request.form['link']
@@ -146,7 +146,7 @@ def about():
 
 
 @app.route('/product')
-def about():
+def product():
     return render_template('Product.html')
 
 
