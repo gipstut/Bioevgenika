@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///blog.db'     # созздание и название базы данных
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SECRET_KEY'] = 'jldwflnieoi234nevnoixcseqodp234lclsdsdc09lknmv'
 db = SQLAlchemy(app)
 
 
@@ -23,9 +24,27 @@ def __repr__(self):
     return '<Item %r>' % self.id
 
 
+@app.route('/login', methods=['POST', 'GET'])
+def login():
+    if request.method == 'POST' and request.form['password'] == '2':
+        password = request.form['password']
+        session['password'] = password
+        return redirect('/admin')
+    else:
+        return render_template("login.html")
+
+
+@app.route('/admin')
+def admin():
+    if session['password'] == '2':
+        return render_template('admin.html')
+    else:
+        return redirect('/login')
+
+
 @app.route('/create', methods=['POST', 'GET'])
 def create():
-    if request.method == 'POST':
+    if request.method == 'POST' and session['password'] == '2':
         link = request.form['link']
         price = request.form['price']
         description = request.form['description']
@@ -42,13 +61,15 @@ def create():
             return redirect('/')
         except:
             return 'Так-Так, что-то не так'
-    else:
+    elif session['password'] == '2':
         return render_template('create.html')
+    else:
+        return f'место где что то пошло не так 1'
 
 
 @app.route('/update/', methods=['POST', 'GET'])
 def update():
-    if request.method == 'POST' and 'id' in request.form and 'link' not in request.form:
+    if request.method == 'POST' and 'id' in request.form and 'link' not in request.form and session['password'] == '2':
         id = request.form['id']
         article = Item.query.get(id)
         return render_template('post_update.html', article=article)
@@ -69,13 +90,13 @@ def update():
             return redirect('/')
         except:
             return 'Так-Так, что-то не так'
-    else:
+    elif session['password'] == '2':
         return render_template('update.html')
 
 
 @app.route('/del', methods=['POST', 'GET'])
 def post_del():
-    if request.method == 'POST':
+    if request.method == 'POST' and session['password'] == '2':
         id = request.form['id']
         article = Item.query.get(id)
         try:
@@ -84,8 +105,10 @@ def post_del():
             return redirect('/')
         except:
             return 'При удалении произошла ошибка'
-    else:
+    elif session['password'] == '2':
         return render_template('del.html')
+    else:
+        return redirect('/login')
 
 
 @app.route('/')
@@ -135,11 +158,6 @@ def full_post(id):
     return render_template('post.html', post=post)
 
 
-@app.route('/admin')
-def admin():
-    return render_template('admin.html')
-
-
 @app.route('/about')
 def about():
     return render_template('About_us.html')
@@ -151,4 +169,4 @@ def product():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
